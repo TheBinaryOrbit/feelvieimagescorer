@@ -1,10 +1,12 @@
 import express from "express";
+import cors from "cors";
 import analyzeRoutes from "./src/routes/analyzeRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
