@@ -10,6 +10,43 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Comprehensive logging middleware
+app.use((req, res, next) => {
+  const startTime = Date.now();
+  
+  // Log incoming request
+  console.log("\n📥 INCOMING REQUEST");
+  console.log("━".repeat(50));
+  console.log(`🔹 Method: ${req.method}`);
+  console.log(`🔹 URL: ${req.url}`);
+  console.log(`🔹 IP: ${req.ip}`);
+  console.log(`🔹 Headers:`, JSON.stringify(req.headers, null, 2));
+  if (Object.keys(req.body).length > 0) {
+    console.log(`🔹 Body:`, JSON.stringify(req.body, null, 2));
+  }
+  if (Object.keys(req.query).length > 0) {
+    console.log(`🔹 Query:`, JSON.stringify(req.query, null, 2));
+  }
+  console.log("━".repeat(50));
+  
+  // Intercept response to log it
+  const originalSend = res.send;
+  res.send = function(data) {
+    const duration = Date.now() - startTime;
+    console.log("\n📤 OUTGOING RESPONSE");
+    console.log("━".repeat(50));
+    console.log(`🔹 Status: ${res.statusCode}`);
+    console.log(`🔹 Duration: ${duration}ms`);
+    console.log(`🔹 Headers:`, JSON.stringify(res.getHeaders(), null, 2));
+    console.log(`🔹 Body:`, typeof data === "string" ? data : JSON.stringify(data, null, 2));
+    console.log("━".repeat(50) + "\n");
+    
+    return originalSend.call(this, data);
+  };
+  
+  next();
+});
+
 // Routes
 app.use("/api", analyzeRoutes);
 
