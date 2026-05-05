@@ -82,6 +82,7 @@ Acceptance Rule:
 
 MANDATORY REJECTION CRITERIA (AUTOMATIC REJECTION):
 Images must be AUTOMATICALLY REJECTED with total_score = 0 and status = "rejected" if:
+- The image contains more than ONE person (only single person images are acceptable)
 - The image contains any nudity or partially exposed intimate body parts
 - The image is sexually explicit or suggestive in any way
 - The person is wearing swimwear, lingerie, or minimal clothing meant to be sexually suggestive
